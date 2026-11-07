@@ -119,16 +119,17 @@ const FIREBASE = {
    Spielleitung: Adresse mit #admin öffnen, Code = spielleiterCode.
    ========================================================================= */
 const CONFIG = {
+  version: 3,                      // bei Änderungen am Spielablauf erhöhen: alte Spielstände werden dann verworfen
   spielleiterCode: "luzern2026",   // öffnet #admin; in jedes Antwortfeld getippt überspringt er den Schritt
   resetCode: "1234",               // für «Alles zurücksetzen» in der Spielleitung
   whatsappNummer: "",              // z.B. "41791234567" (ohne + und Leerzeichen); leer = nur Hinweistext
-  ersteRaetselAufSeite: true,      // false = Rätsel zur ersten Station nur im Umschlag
+  ersteRaetselAufSeite: false,     // false = Rätsel zur ersten Station nur im Umschlag
   punkte: { ziel: 10, hinweisStrafe: 10, final: 30 },
 
   teams: {
-    hefe:   { anzeige: "Team Hefe",   code: "fritschi", stationen: ["loewendenkmal", "kapellbruecke", "wachtturm"] },
-    malz:   { anzeige: "Team Malz",   code: "fasnacht", stationen: ["kapellbruecke", "wachtturm", "loewendenkmal"] },
-    hopfen: { anzeige: "Team Hopfen", code: "guugger",  stationen: ["wachtturm", "loewendenkmal", "kapellbruecke"] }
+    hefe:   { anzeige: "Team Hefe",   code: "fritschi", stationen: ["loewendenkmal", "kapellbruecke", "zytturm"] },
+    malz:   { anzeige: "Team Malz",   code: "fasnacht", stationen: ["loewendenkmal", "zytturm", "kapellbruecke"] },
+    hopfen: { anzeige: "Team Hopfen", code: "guugger",  stationen: ["zytturm", "loewendenkmal", "kapellbruecke"] }
   },
 
   stationen: {
@@ -150,7 +151,7 @@ const CONFIG = {
           intro: "Die Antworten stehen auf den Infotafeln vor Ort. Googeln gilt nicht, Ehrensache.",
           fragen: [
             { frage: "Die Schweizergardisten starben beim Schutz eines französischen Königs. Welcher war es?",
-              antworten: ["Ludwig XVI", "Ludwig 16", "Louis XVI", "Louis 16", "Ludwig der Sechzehnte"] },
+              antworten: ["Ludwig XVI", "Ludwig 16", "Louis XVI", "Louis 16", "Ludwig der Sechzehnte", "Ludwig der 16", "König Ludwig XVI", "König Ludwig 16", "Louis Seize", "Ludwig XVI von Frankreich", "Louis XVI de France"] },
             { frage: "Der Löwe wurde von einem dänischen Bildhauer entworfen. Wie heisst er mit Nachnamen?",
               antworten: ["Thorvaldsen", "Thorwaldsen", "Bertel Thorvaldsen"] },
             { frage: "Entworfen in Rom, gemeisselt in Luzern: Wer hat den Löwen tatsächlich in den Fels gehauen?",
@@ -175,20 +176,23 @@ const CONFIG = {
       naechstesRaetselPerWhatsapp: true   // Rätsel zur nächsten Station kommt erst, wenn das Foto da ist
     },
 
-    wachtturm: {
-      name: "Wachtturm", kurz: "Wachtturm",
-      zielAntworten: ["Wachtturm", "Wachturm", "Musegg", "Museggmauer", "Museggturm", "Zytturm", "Zeitturm", "Panoramaterrasse"],
+    zytturm: {
+      name: "Zytturm", kurz: "Zytturm",
+      zielAntworten: ["Zytturm", "Zeitturm", "Zyt Turm", "Zytturm Musegg", "Zyt", "Musegg", "Museggmauer", "Museggturm", "Wachtturm", "Wachturm", "Panoramaterrasse", "Uhrturm"],
       raetsel: {
-        stufe1: "Neun Wächter stehen auf dem Hügel über der Altstadt. Einer trägt die Wache schon im Namen – und von seiner Terrasse seht ihr, dass die Zeit in Luzern ihren eigenen Kopf hat.",
-        stufe2: "Museggmauer. Der Turm mit der Aussicht, die Uhr in Sichtweite."
+        stufe1: "Neun Wächter stehen auf dem Hügel über der Altstadt. Einer von ihnen darf als Einziger in der Stadt vorgehen – um genau eine Minute.",
+        stufe2: "Museggmauer. Der Turm mit der Uhr."
       },
       intro: "Ihr seid oben. Erst der Beweis, dann die Zahl.",
       aufgaben: [
-        { id: "selfie", typ: "foto", titel: "Panorama-Selfie", punkte: 10, whatsappText: "Selfie Wachtturm",
-          text: "Ein Selfie mit dem ganzen Team auf der Panoramaterrasse, die Stadt im Rücken. Alle Gesichter drauf, sonst gilt’s nicht." },
-        { id: "iv", typ: "text", titel: "Die falsche Zahl", punkte: 15,
-          text: "Dem Doktor unter den Geburtstagskindern fällt es sofort auf: Was auf diesem Ziffernblatt fehlt, würde er dem Patienten i.v. geben – intravenös, direkt in die Vene. Der Uhrmacher sah das anders und hat lieber vier gleiche Striche gesetzt.\nWelche Zahl gehört eigentlich hin? Antwort so, wie der Doktor sie schreiben würde.",
-          hinweis: "Auf dem Ziffernblatt steht eine Zahl so, wie sie in der Schule nie durchgegangen wäre. Zählt die Striche.",
+        { id: "selfie", typ: "foto", titel: "Panorama-Selfie", punkte: 10, whatsappText: "Selfie Zytturm",
+          text: "Ein Selfie mit dem ganzen Team auf der Panoramaterrasse beim Turm, die Stadt im Rücken. Alle Gesichter drauf, sonst gilt’s nicht." },
+        { id: "iv", typ: "text", titel: "Was ist es?", punkte: 15,
+          text: "Macht Jan damit einen Fehler, merkt es der Patient sofort. An dieser Uhr steckt derselbe Fehler seit Jahrhunderten – und keiner hat sich je beschwert.",
+          hinweise: [
+            "Es geht ums Ziffernblatt. Schaut genau hin.",
+            "Auf dem Ziffernblatt steht eine Zahl so, wie sie in der Schule nie durchgegangen wäre. Zählt die Striche."
+          ],
           antworten: ["IV", "4"] }
       ]
     }
@@ -226,11 +230,13 @@ function backendInit() {
     }
   } catch (e) { console.warn("Firebase nicht gestartet:", e); db = null; }
 }
-function freshState() { return { rev: 0, idx: 0, phase: "ziel", tasks: {}, punkte: 0, strafen: 0, log: [], start: Date.now(), lastSeen: Date.now(), finalHints: 0 }; }
+function freshState() { return { version: CONFIG.version, rev: 0, idx: 0, phase: "ziel", tasks: {}, punkte: 0, strafen: 0, log: [], start: Date.now(), lastSeen: Date.now(), finalHints: 0 }; }
+function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
 function normalize(s) {
-  s = s || freshState();
-  s.tasks = s.tasks || {}; s.log = s.log || []; s.rev = s.rev || 0; s.finalHints = s.finalHints || 0;
-  Object.values(s.tasks).forEach(t => { t.done = t.done || {}; t.doneT = t.doneT || {}; t.triviaIdx = t.triviaIdx || {}; t.triviaT = t.triviaT || {}; t.bonus = t.bonus || {}; t.hint = t.hint || {}; });
+  if (!s || s.version !== CONFIG.version) return freshState();   // alter oder fremder Spielstand → neu
+  s.tasks = isObj(s.tasks) ? s.tasks : {}; s.log = Array.isArray(s.log) ? s.log : []; s.rev = s.rev || 0; s.finalHints = s.finalHints || 0;
+  s.idx = Number(s.idx) || 0; s.punkte = Number(s.punkte) || 0; s.strafen = Number(s.strafen) || 0;
+  Object.values(s.tasks).forEach(t => { ["done", "doneT", "triviaIdx", "triviaT", "bonus", "hint"].forEach(k => { if (!isObj(t[k])) t[k] = {}; }); });
   return s;
 }
 function save() {
@@ -405,6 +411,14 @@ function waLink(a) {
     ? `<a class="btn ghost" style="margin-bottom:.6rem" href="https://wa.me/${CONFIG.whatsappNummer}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Foto per WhatsApp an die Spielleitung</a>`
     : `<p class="small muted">Schickt das Foto per WhatsApp an die Spielleitung (Nummer im Umschlag).</p>`;
 }
+function hintsHtml(a, ts) {
+  const list = a.hinweise || (a.hinweis ? [a.hinweis] : []);
+  if (!list.length) return "";
+  const n = Math.min(Number(ts.hint[a.id]) || 0, list.length);
+  const shown = list.slice(0, n).map((h, i) => `<div class="riddle hint" style="font-size:1rem"><span class="muted small">Hinweis ${i + 1}</span><br>${esc(h)}</div>`).join("");
+  const btn = n < list.length ? `<button class="btn quiet" id="h_${a.id}" style="margin:.4rem 0 .6rem">Hinweis ${n + 1} von ${list.length} anzeigen (−${CONFIG.punkte.hinweisStrafe} Punkte)</button>` : "";
+  return shown + btn;
+}
 function renderAufgaben() {
   const s = station(), ts = taskState();
   const stampHtml = (t) => `<div class="stamp ${t === justStamped ? "fresh" : ""}">Erledigt ${fmt(t)}</div>`;
@@ -417,12 +431,12 @@ function renderAufgaben() {
 
     if (a.typ === "zahl" || a.typ === "text") {
       const b = el(`<div class="block ${done ? "done" : "active"}">${done ? stampHtml(ts.doneT[a.id]) : ""}<h3>${esc(a.titel)}</h3><p style="white-space:pre-line">${esc(a.text)}</p>
-        ${done ? "" : `${a.hinweis ? (ts.hint[a.id] ? `<div class="riddle hint" style="font-size:1rem">${esc(a.hinweis)}</div>` : `<button class="btn quiet" id="h_${a.id}" style="margin-bottom:.6rem">Hinweis anzeigen (−${CONFIG.punkte.hinweisStrafe} Punkte)</button>`) : ""}
+        ${done ? "" : `${hintsHtml(a, ts)}
         <div id="m_${a.id}"></div><input type="${a.typ === "zahl" ? "tel" : "text"}" id="i_${a.id}" autocomplete="off" placeholder="${a.typ === "zahl" ? "Zahl" : "Antwort"}"><button class="btn" id="g_${a.id}">Prüfen</button>`}</div>`);
       app.appendChild(b);
       if (!done) {
         const h = document.getElementById("h_" + a.id);
-        if (h) h.onclick = () => { ts.hint[a.id] = true; st.strafen += CONFIG.punkte.hinweisStrafe; logEv("Hinweis geöffnet: " + a.titel); render(); };
+        if (h) h.onclick = () => { ts.hint[a.id] = (Number(ts.hint[a.id]) || 0) + 1; st.strafen += CONFIG.punkte.hinweisStrafe; logEv(`Hinweis ${ts.hint[a.id]} geöffnet: ${a.titel}`); render(); };
         const go = () => { const val = document.getElementById("i_" + a.id).value;
           const ok = a.typ === "zahl" ? matchNumber(val, a.antwort) : matchText(val, a.antworten);
           if (isSkip(val) || ok) { completeTask(a, isSkip(val)); render(); }
@@ -523,8 +537,8 @@ function drawAdmin() {
   app.appendChild(el(`<div class="topbar"><strong>Spielleitung</strong><span class="small muted">${db ? "Live aus der Datenbank" : "Nur Spielstände dieses Handys (kein Firebase)"}</span></div>`));
   const grid = el(`<div class="teamgrid"></div>`);
   Object.keys(CONFIG.teams).forEach(k => {
-    const t = CONFIG.teams[k], d = adminData[k] ? normalize(JSON.parse(JSON.stringify(adminData[k]))) : null;
-    let status = "Noch nicht eingeloggt", ticks = "", logs = "", btn = "";
+    const t = CONFIG.teams[k], raw = adminData[k], d = (raw && raw.version === CONFIG.version) ? normalize(JSON.parse(JSON.stringify(raw))) : null;
+    let status = raw && !d ? "Alter Spielstand (wird beim Einloggen verworfen)" : "Noch nicht eingeloggt", ticks = "", logs = "", btn = "";
     const route = t.stationen.map(id => CONFIG.stationen[id].kurz).join(" → ") + " → Bar";
     if (d) {
       if (d.phase === "ende") status = "Fertig – an der Bar";
@@ -535,8 +549,8 @@ function drawAdmin() {
       const lg = d.log.slice().reverse();
       logs = `<details><summary class="small">Protokoll (${lg.length} Einträge, letzte zuerst)</summary><ul class="log">${logHtml(lg)}</ul></details>`;
       if (d.phase !== "ende") btn = `<button class="btn sm ghost" data-skip="${k}" style="margin-top:.6rem">Nächsten Schritt freischalten</button> `;
-      btn += `<button class="btn sm danger" data-reset="${k}" style="margin-top:.6rem">Team zurücksetzen</button>`;
     }
+    if (raw) btn += `<button class="btn sm danger" data-reset="${k}" style="margin-top:.6rem">Team zurücksetzen</button>`;
     grid.appendChild(el(`<div class="block ${d ? "active" : "locked"}"><h3>${esc(t.anzeige)} <span class="small muted" style="font-weight:400">· Code ${esc(t.code)}</span></h3>
       <div class="small muted">${esc(route)}</div><div class="status">${esc(status)}</div>${ticks ? `<div class="ticks">${ticks}</div>` : ""}
       ${d ? `<div class="small muted">${d.punkte - d.strafen} Punkte · zuletzt aktiv ${ago(d.lastSeen || d.start)}</div>` : ""}${logs}${btn}</div>`));
@@ -550,15 +564,20 @@ function drawAdmin() {
     <dt>Bar – Rätsel</dt><dd class="sol">${esc(F.text)}</dd>
     <dt>Bar – Hinweise</dt><dd class="sol">${F.hinweise.map((h, i) => `${i + 1}. ${esc(h)}`).join("\n")}</dd>
     <dt>Bar – Lösung</dt><dd class="sol">E ${F.e} / N ${F.n} (LV95), Toleranz ±${F.toleranz} m. Gilt auch: «${esc(F.nameAntworten[0])}». ${esc(F.adresse)}</dd></dl></details></div>`));
-  app.appendChild(el(`<div class="block warn"><h3>Alles zurücksetzen</h3><p class="small muted">Löscht den Spielstand aller Teams. Nur mit Reset-Code.</p><button class="btn danger" id="resetAll">Alle Teams zurücksetzen</button></div>`));
+  app.appendChild(el(`<div class="block warn" id="resetBlock"><h3>Zurücksetzen</h3><p class="small muted">Reset-Code eingeben, dann «Team zurücksetzen» bei einem Team oder «Alle Teams zurücksetzen». Löscht den Spielstand, nicht die Konfiguration.</p>
+    <div id="rMsg">${adminMsg ? `<div class="msg ${adminMsg.ok ? "ok" : "err"}">${esc(adminMsg.text)}</div>` : ""}</div>
+    <label for="rc">Reset-Code</label><input type="password" id="rc" autocomplete="off" value="${esc(resetCodeTyped)}">
+    <button class="btn danger" id="resetAll">Alle Teams zurücksetzen</button></div>`));
   app.appendChild(el(`<p class="foot">Zum Spiel zurück: #admin aus der Adresse löschen und neu laden.</p>`));
 
-  grid.querySelectorAll("[data-skip]").forEach(b => b.onclick = () => gmSkip(b.getAttribute("data-skip")));
+  document.getElementById("rc").addEventListener("input", e => { resetCodeTyped = e.target.value; });
+  grid.querySelectorAll("[data-skip]").forEach(b => b.onclick = () => gmSkip(b.getAttribute("data-skip"), b));
   grid.querySelectorAll("[data-reset]").forEach(b => b.onclick = () => gmReset(b.getAttribute("data-reset")));
   document.getElementById("resetAll").onclick = () => gmReset(null);
 }
-async function gmSkip(k) {
-  if (!confirm(`${CONFIG.teams[k].anzeige}: nächsten Schritt freischalten?`)) return;
+let adminMsg = null, resetCodeTyped = "";
+async function gmSkip(k, btn) {
+  if (btn && btn.dataset.armed !== "1") { btn.dataset.armed = "1"; btn.textContent = "Wirklich? Nochmals tippen"; setTimeout(() => { if (btn.isConnected) { btn.dataset.armed = ""; btn.textContent = "Nächsten Schritt freischalten"; } }, 4000); return; }
   const sv = [team, st, teamRef]; team = k;
   if (db) { teamRef = db.ref("teams/" + k); const snap = await teamRef.once("value"); st = normalize(snap.exists() ? snap.val() : null); }
   else { st = normalize(fetchStore("sj_" + k)); teamRef = null; }
@@ -567,14 +586,16 @@ async function gmSkip(k) {
   if (!db) bindAdmin();
 }
 async function gmReset(k) {
-  const code = prompt(k ? `${CONFIG.teams[k].anzeige} zurücksetzen – Reset-Code:` : "ALLE Teams zurücksetzen – Reset-Code:");
-  if (code === null) return;
-  if (norm(code) !== norm(CONFIG.resetCode)) { alert("Reset-Code stimmt nicht."); return; }
+  const code = resetCodeTyped;
+  if (norm(code) !== norm(CONFIG.resetCode)) { adminMsg = { ok: false, text: code ? "Reset-Code stimmt nicht." : "Zuerst den Reset-Code eingeben." }; drawAdmin(); return; }
   const keys = k ? [k] : Object.keys(CONFIG.teams);
   for (const key of keys) { try { localStorage.removeItem("sj_" + key); } catch (e) {} }
-  sessionSet(null);
-  if (db) { if (k) await db.ref("teams/" + k).remove(); else await db.ref("teams").remove(); }
-  else bindAdmin();
+  if (!k || k === team) { if (teamRef) teamRef.off(); teamRef = null; team = null; st = null; sessionSet(null); }
+  try {
+    if (db) { if (k) await db.ref("teams/" + k).remove(); else await db.ref("teams").remove(); }
+    adminMsg = { ok: true, text: `${k ? CONFIG.teams[k].anzeige : "Alle Teams"} zurückgesetzt (${fmt(Date.now())}).` };
+  } catch (e) { adminMsg = { ok: false, text: "Zurücksetzen fehlgeschlagen: " + (e && e.message ? e.message : e) }; }
+  if (!db) bindAdmin(); else drawAdmin();
 }
 
 /* ========================= Start ========================= */
