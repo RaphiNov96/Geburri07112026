@@ -215,6 +215,9 @@ let team = null, st = null, db = null, teamRef = null, online = false, adminOk =
 
 function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function fetchStore(k) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+/* Eingeloggtes Team nur für die Browser-Sitzung merken: Browser zu = neu einloggen, Spielstand bleibt. */
+function sessionSet(v) { try { if (v) sessionStorage.setItem("sj_current", v); else sessionStorage.removeItem("sj_current"); } catch (e) {} }
+function sessionGet() { try { return sessionStorage.getItem("sj_current"); } catch (e) { return null; } }
 function backendInit() {
   try {
     if (FIREBASE.databaseURL && window.firebase) {
@@ -232,7 +235,7 @@ function normalize(s) {
 }
 function save() {
   st.rev = (st.rev || 0) + 1; st.lastSeen = Date.now();
-  store("sj_" + team, st); store("sj_current", team);
+  store("sj_" + team, st); sessionSet(team);
   if (teamRef) teamRef.set(JSON.parse(JSON.stringify(st)));
 }
 function logEv(text, kind) { st.log.push({ t: Date.now(), text, kind: kind || "" }); save(); }
@@ -257,7 +260,7 @@ async function loginTeam(k) {
   }
   render();
 }
-function logout() { if (teamRef) teamRef.off(); teamRef = null; team = null; st = null; store("sj_current", null); render(); }
+function logout() { if (teamRef) teamRef.off(); teamRef = null; team = null; st = null; sessionSet(null); render(); }
 
 /* ========================= Hilfsfunktionen ========================= */
 function stationIds() { return CONFIG.teams[team].stationen; }
@@ -348,8 +351,7 @@ function lineStrip() {
   const ids = stationIds();
   let stops = ids.map((id, i) => {
     const cls = i < st.idx ? "done" : (i === st.idx && st.phase !== "final" ? "now" : "");
-    const name = CONFIG.stationen[id].kurz || CONFIG.stationen[id].name;
-    return `<div class="stop ${cls}"><div class="dot"></div><div class="label">${esc(i === st.idx && st.phase === "ziel" ? "?" : name)}</div></div>`;
+    return `<div class="stop ${cls}"><div class="dot"></div><div class="label">Station ${i + 1}</div></div>`;
   }).join("");
   stops += `<div class="stop bar ${st.phase === "final" ? "now" : (st.phase === "ende" ? "done" : "")}"><div class="dot"></div><div class="label">${st.phase === "ende" ? "Bar" : "?"}</div></div>`;
   return el(`<div class="line"><div class="track"></div><div class="stops">${stops}</div></div>`);
@@ -570,7 +572,7 @@ async function gmReset(k) {
   if (norm(code) !== norm(CONFIG.resetCode)) { alert("Reset-Code stimmt nicht."); return; }
   const keys = k ? [k] : Object.keys(CONFIG.teams);
   for (const key of keys) { try { localStorage.removeItem("sj_" + key); } catch (e) {} }
-  try { localStorage.removeItem("sj_current"); } catch (e) {}
+  sessionSet(null);
   if (db) { if (k) await db.ref("teams/" + k).remove(); else await db.ref("teams").remove(); }
   else bindAdmin();
 }
@@ -580,7 +582,7 @@ window.addEventListener("hashchange", () => { if (location.hash === "#admin") re
 (function init() {
   backendInit();
   if (location.hash === "#admin") return renderAdmin();
-  const cur = fetchStore("sj_current");
+  const cur = sessionGet();
   if (cur && CONFIG.teams[cur]) loginTeam(cur); else render();
 })();
 </script>
