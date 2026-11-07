@@ -127,9 +127,9 @@ const CONFIG = {
   punkte: { ziel: 10, hinweisStrafe: 10, final: 30 },
 
   teams: {
-    hefe:   { anzeige: "Team Hefe",   code: "fritschi", stationen: ["loewendenkmal", "kapellbruecke", "zytturm"] },
-    malz:   { anzeige: "Team Malz",   code: "fasnacht", stationen: ["kapellbruecke", "zytturm", "loewendenkmal"] },
-    hopfen: { anzeige: "Team Hopfen", code: "guugger",  stationen: ["zytturm", "loewendenkmal", "kapellbruecke"] }
+    hefe:   { anzeige: "Team Hefe",   code: "fritschi", stationen: ["loewendenkmal", "wasserturm", "zytturm"] },
+    malz:   { anzeige: "Team Malz",   code: "fasnacht", stationen: ["wasserturm", "zytturm", "loewendenkmal"] },
+    hopfen: { anzeige: "Team Hopfen", code: "guugger",  stationen: ["zytturm", "loewendenkmal", "wasserturm"] }
   },
 
   stationen: {
@@ -160,17 +160,17 @@ const CONFIG = {
       ]
     },
 
-    kapellbruecke: {
-      name: "Kapellbrücke", kurz: "Kapellbrücke",
-      zielAntworten: ["Kapellbrücke", "Kapellbruecke", "Wasserturm", "Kapellbrücke Wasserturm", "Chapel Bridge", "Water Tower"],
+    wasserturm: {
+      name: "Wasserturm", kurz: "Wasserturm",
+      zielAntworten: ["Wasserturm", "Wasser Turm", "Water Tower"],
       raetsel: {
         stufe1: "Acht Ecken, älter als mein berühmter Nachbar. Ich habe Gold, Akten und Gefangene beherbergt.",
         stufe2: "Mein Nachbar brannte 1993 und verlor die meisten seiner Bilder."
       },
       intro: "Ihr seid da. Hier zählt nur eins: das Bild.",
       aufgaben: [
-        { id: "giebel", typ: "foto", titel: "Giebelbild nachstellen", punkte: 15, whatsappText: "Giebelbild Kapellbrücke",
-          text: "Sucht euch eines der Giebelbilder auf der Brücke aus und stellt es nach: gleiche Haltung, gleiche Anordnung, so viele aus dem Team wie Figuren im Bild. Schickt der Spielleitung das Original und euren Nachbau.",
+        { id: "giebel", typ: "foto", titel: "Giebelbild nachstellen", punkte: 15, whatsappText: "Giebelbild Wasserturm",
+          text: "Sucht euch eines der Giebelbilder auf der Kapellbrücke neben dem Turm aus und stellt es nach: gleiche Haltung, gleiche Anordnung, so viele aus dem Team wie Figuren im Bild. Schickt der Spielleitung das Original und euren Nachbau.",
           bonus: { text: "Bonus: Ein zufälliger Tourist spielt eine Figur mit (+10)", punkte: 10 } }
       ],
       naechstesRaetselPerWhatsapp: true   // Rätsel zur nächsten Station kommt erst, wenn das Foto da ist
