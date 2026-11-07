@@ -29,37 +29,31 @@
   }
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   *, *::before, *::after { box-sizing: inherit; }
-  body {
-    margin: 0; background: var(--paper); color: var(--ink);
-    font: 17px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 32rem; margin: 0 auto; padding: 1.25rem 1.1rem 4rem; }
-  .wrap.wide { max-width: 44rem; }
+  .wrap.wide { max-width: 46rem; }
   h1 { font-size: 2.1rem; line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 .5rem; }
   h2 { font-size: 1.45rem; line-height: 1.15; font-weight: 800; letter-spacing: -0.015em; margin: 0 0 .4rem; }
   h3 { font-size: 1.05rem; font-weight: 700; margin: 0 0 .3rem; }
   p { margin: 0 0 .8rem; }
-  .muted { color: var(--muted); }
-  .small { font-size: .9rem; }
+  .muted { color: var(--muted); } .small { font-size: .9rem; }
   .topbar { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: .7rem; border-bottom: 2px solid var(--ink); margin-bottom: 1rem; }
-  .topbar strong { font-weight: 800; }
-  .score { font-variant-numeric: tabular-nums; white-space: nowrap; }
-
+  .topbar strong { font-weight: 800; } .score { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .line { position: relative; margin: 1.2rem 0 1.6rem; }
   .line .track { position: absolute; left: 10px; right: 10px; top: 9px; height: 4px; background: var(--line); border-radius: 2px; }
   .line .stops { display: flex; justify-content: space-between; position: relative; }
-  .line .stop { display: flex; flex-direction: column; align-items: center; width: 33%; text-align: center; }
+  .line .stop { display: flex; flex-direction: column; align-items: center; width: 25%; text-align: center; }
   .line .dot { width: 22px; height: 22px; border-radius: 50%; border: 4px solid var(--line); background: var(--paper); }
   .line .stop.done .dot { background: var(--blue); border-color: var(--blue); }
   .line .stop.now .dot { border-color: var(--blue); background: var(--paper); box-shadow: 0 0 0 4px var(--paper), 0 0 0 6px var(--blue); }
+  .line .stop.bar .dot { border-radius: 4px; }
   .line .label { font-size: .8rem; margin-top: .45rem; color: var(--muted); line-height: 1.2; }
   .line .stop.now .label { color: var(--ink); font-weight: 700; }
-
   .block { position: relative; background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--line); border-radius: 6px; padding: 1rem 1rem 1rem 1.1rem; margin: 0 0 1rem; }
   .block.active { border-left-color: var(--blue); }
   .block.locked { border-left-style: dashed; background: transparent; color: var(--muted); }
   .block.done { border-left-color: var(--stamp); }
+  .block.warn { border-left-color: var(--amber); }
   .stamp { position: absolute; top: .6rem; right: .7rem; transform: rotate(-7deg); border: 2px solid var(--stamp); color: var(--stamp); border-radius: 4px; padding: .1rem .45rem; font-size: .72rem; font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
   @media (prefers-reduced-motion: no-preference) {
     .stamp.fresh { animation: stampIn .35s cubic-bezier(.2,1.4,.4,1) both; }
@@ -74,14 +68,16 @@
   .btn:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
   .btn.ghost { background: transparent; color: var(--blue); }
   .btn.quiet { background: transparent; color: var(--muted); border-color: var(--line); font-weight: 600; font-size: .95rem; }
+  .btn.danger { background: transparent; color: var(--err); border-color: var(--err); }
   .btn.sm { width: auto; font-size: .9rem; padding: .45rem .7rem; }
+  .btn + .btn { margin-top: .5rem; }
   .msg { padding: .6rem .8rem; border-radius: 6px; margin: 0 0 .7rem; font-weight: 600; }
-  .msg.err { background: var(--err-bg); color: var(--err); }
-  .msg.ok { background: var(--ok-bg); color: var(--ok); }
+  .msg.err { background: var(--err-bg); color: var(--err); } .msg.ok { background: var(--ok-bg); color: var(--ok); }
   .check { display: flex; gap: .7rem; align-items: flex-start; margin: .5rem 0 .8rem; font-weight: 600; }
   .check input { width: 1.4rem; height: 1.4rem; margin: .1rem 0 0; flex: none; accent-color: var(--blue); }
-  .riddle { font-size: 1.2rem; line-height: 1.45; font-weight: 600; padding: .2rem 0 .6rem; }
-  .riddle.hint { border-top: 1px dashed var(--line); margin-top: .6rem; padding-top: .8rem; font-weight: 500; }
+  .riddle { font-size: 1.2rem; line-height: 1.45; font-weight: 600; padding: .2rem 0 .6rem; white-space: pre-line; }
+  .riddle.hint { border-top: 1px dashed var(--line); margin-top: .6rem; padding-top: .8rem; font-weight: 500; font-size: 1.05rem; }
+  .riddle.long { font-weight: 500; font-size: 1.05rem; }
   dl { margin: 0; } dt { font-weight: 700; margin-top: .6rem; } dd { margin: 0 0 .2rem; color: var(--muted); font-variant-numeric: tabular-nums; }
   .log { font-size: .9rem; padding-left: 1.1rem; } .log li { margin: .2rem 0; }
   .log .bad { color: var(--err); } .log .gm { color: var(--amber); }
@@ -92,10 +88,10 @@
   a { color: var(--blue); }
   .teamgrid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); }
   .status { font-weight: 700; margin: .2rem 0 .5rem; }
-  .ticks { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; }
-  .ticks b { color: var(--ink); }
+  .ticks { font-size: .9rem; color: var(--muted); margin-bottom: .5rem; } .ticks b { color: var(--ink); }
+  details { margin: .4rem 0; } summary { cursor: pointer; font-weight: 600; }
+  .sol { white-space: pre-line; font-size: .95rem; }
 </style>
-<!-- Firebase (nur aktiv, wenn unten FIREBASE ausgefüllt ist) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
@@ -104,11 +100,7 @@
 
 <script>
 /* =========================================================================
-   FIREBASE – gemeinsamer Spielstand (optional)
-   Werte aus der Firebase-Konsole einfügen: Projekteinstellungen → Meine Apps
-   → SDK-Konfiguration. WICHTIG: databaseURL muss dabei sein (steht sonst oben
-   auf der Seite «Realtime Database»). Bleibt databaseURL leer, läuft die Seite
-   wie bisher nur auf dem einzelnen Handy.
+   FIREBASE – gemeinsamer Spielstand. databaseURL leer = nur dieses Handy.
    ========================================================================= */
 const FIREBASE = {
   apiKey: "AIzaSyAE42dDRMHchqG-6zCcRQiVzxwgEgdx_M4",
@@ -121,77 +113,121 @@ const FIREBASE = {
 };
 
 /* =========================================================================
-   KONFIGURATION – Antworten, Teams, Fragen
-   Antworten werden tolerant verglichen: Gross/Klein, Umlaute, Leerzeichen
-   und 1–2 Tippfehler sind egal. Zahlen müssen exakt stimmen.
-   Spielleitung: Seite mit #admin am Ende der Adresse öffnen.
+   KONFIGURATION
+   Antworten werden tolerant verglichen (Gross/Klein, Umlaute, Leerzeichen,
+   1–2 Tippfehler bei längeren Wörtern). Zahlen müssen exakt stimmen.
+   Spielleitung: Adresse mit #admin öffnen, Code = spielleiterCode.
    ========================================================================= */
 const CONFIG = {
-  spielleiterCode: "luzern2026",   // in jedes Antwortfeld tippbar → überspringt den Schritt; auch Login für #admin
+  spielleiterCode: "luzern2026",   // öffnet #admin; in jedes Antwortfeld getippt überspringt er den Schritt
+  resetCode: "1234",               // für «Alles zurücksetzen» in der Spielleitung
   whatsappNummer: "",              // z.B. "41791234567" (ohne + und Leerzeichen); leer = nur Hinweistext
-  punkte: { ziel: 10, zahl: 10, triviaProFrage: 5, foto: 10, hinweisStrafe: 10 },
+  ersteRaetselAufSeite: true,      // false = Rätsel zur ersten Station nur im Umschlag
+  punkte: { ziel: 10, hinweisStrafe: 10, final: 30 },
 
   teams: {
-    "hefe": { anzeige: "Team Hefe", code: "123456", stationen: ["loewendenkmal", "wasserturm"] }
+    hefe:   { anzeige: "Team Hefe",   code: "fritschi", stationen: ["loewendenkmal", "kapellbruecke", "wachtturm"] },
+    malz:   { anzeige: "Team Malz",   code: "fasnacht", stationen: ["kapellbruecke", "wachtturm", "loewendenkmal"] },
+    hopfen: { anzeige: "Team Hopfen", code: "guugger",  stationen: ["wachtturm", "loewendenkmal", "kapellbruecke"] }
   },
 
   stationen: {
     loewendenkmal: {
       name: "Löwendenkmal", kurz: "Löwe",
       zielAntworten: ["Löwendenkmal", "Loewendenkmal", "Löwen Denkmal", "Lion Monument", "Löwenplatz", "Lion of Lucerne"],
-      zahl: {
-        frage: "Die Inschrift nennt vier Zahlen in römischen Ziffern: gefallene Offiziere, gefallene Soldaten, überlebende Offiziere, überlebende Soldaten. Findet alle vier, rechnet sie um und gebt die Summe ein.",
-        antwort: "1152"   // 26 + 760 + 16 + 350 – vor Ort prüfen!
+      raetsel: {   // Rätsel, um DIESE Station zu finden
+        stufe1: "Ein Däne hat mich gezeichnet, ein Konstanzer gemeisselt, und Mark Twain wurde vor mir weich.",
+        stufe2: "Die Mulde, in der ich liege, soll die Form eines Schweins haben – die Rache eines schlecht bezahlten Steinmetzen."
       },
-      trivia: {
-        intro: "Die Antworten stehen auf den Infotafeln vor Ort. Googeln gilt nicht, Ehrensache.",
-        fragen: [
-          { frage: "Die Schweizergardisten starben beim Schutz eines französischen Königs. Welcher war es?",
-            antworten: ["Ludwig XVI", "Ludwig 16", "Louis XVI", "Louis 16", "Ludwig der Sechzehnte"] },
-          { frage: "Der Löwe wurde von einem dänischen Bildhauer entworfen. Wie heisst er mit Nachnamen?",
-            antworten: ["Thorvaldsen", "Thorwaldsen", "Bertel Thorvaldsen"] },
-          { frage: "Entworfen in Rom, gemeisselt in Luzern: Wer hat den Löwen tatsächlich in den Fels gehauen?",
-            antworten: ["Ahorn", "Lukas Ahorn", "Lucas Ahorn"] }
-        ]
-      },
-      foto: {
-        text: "Ein Foto mit dem ganzen Team und dem Löwen im Bild, aber ohne eine einzige fremde Person. Braucht Timing, einen guten Winkel und ein freundliches «Momänt bitte».",
-        whatsappText: "Team Hefe: Foto Löwendenkmal"
-      },
+      intro: "Ihr seid da. Drei Aufgaben, die Reihenfolge ist euch überlassen: das Foto geht parallel.",
+      aufgaben: [
+        { id: "zahl", typ: "zahl", titel: "Römische Zahlen", punkte: 10,
+          text: "Die Inschrift nennt vier Zahlen in römischen Ziffern: gefallene Offiziere, gefallene Soldaten, überlebende Offiziere, überlebende Soldaten. Findet alle vier, rechnet sie um und gebt die Summe ein.",
+          antwort: "1152" },   // 26 + 760 + 16 + 350 – vor Ort prüfen!
+        { id: "foto", typ: "foto", titel: "Teamfoto", punkte: 10, whatsappText: "Foto Löwendenkmal",
+          text: "Ein Foto mit dem ganzen Team und dem Löwen im Bild, aber ohne eine einzige fremde Person. Braucht Timing, einen guten Winkel und ein freundliches «Momänt bitte»." },
+        { id: "trivia", typ: "trivia", titel: "Trivia", punkteProFrage: 5, nach: "zahl",
+          intro: "Die Antworten stehen auf den Infotafeln vor Ort. Googeln gilt nicht, Ehrensache.",
+          fragen: [
+            { frage: "Die Schweizergardisten starben beim Schutz eines französischen Königs. Welcher war es?",
+              antworten: ["Ludwig XVI", "Ludwig 16", "Louis XVI", "Louis 16", "Ludwig der Sechzehnte"] },
+            { frage: "Der Löwe wurde von einem dänischen Bildhauer entworfen. Wie heisst er mit Nachnamen?",
+              antworten: ["Thorvaldsen", "Thorwaldsen", "Bertel Thorvaldsen"] },
+            { frage: "Entworfen in Rom, gemeisselt in Luzern: Wer hat den Löwen tatsächlich in den Fels gehauen?",
+              antworten: ["Ahorn", "Lukas Ahorn", "Lucas Ahorn"] }
+          ] }
+      ]
+    },
+
+    kapellbruecke: {
+      name: "Kapellbrücke", kurz: "Kapellbrücke",
+      zielAntworten: ["Kapellbrücke", "Kapellbruecke", "Wasserturm", "Kapellbrücke Wasserturm", "Chapel Bridge", "Water Tower"],
       raetsel: {
         stufe1: "Acht Ecken, älter als mein berühmter Nachbar. Ich habe Gold, Akten und Gefangene beherbergt.",
         stufe2: "Mein Nachbar brannte 1993 und verlor die meisten seiner Bilder."
-      }
+      },
+      intro: "Ihr seid da. Hier zählt nur eins: das Bild.",
+      aufgaben: [
+        { id: "giebel", typ: "foto", titel: "Giebelbild nachstellen", punkte: 15, whatsappText: "Giebelbild Kapellbrücke",
+          text: "Sucht euch eines der Giebelbilder auf der Brücke aus und stellt es nach: gleiche Haltung, gleiche Anordnung, so viele aus dem Team wie Figuren im Bild. Schickt der Spielleitung das Original und euren Nachbau.",
+          bonus: { text: "Bonus: Ein zufälliger Tourist spielt eine Figur mit (+10)", punkte: 10 } }
+      ],
+      naechstesRaetselPerWhatsapp: true   // Rätsel zur nächsten Station kommt erst, wenn das Foto da ist
     },
-    wasserturm: {
-      name: "Wasserturm", kurz: "Wasserturm",
-      zielAntworten: ["Wasserturm", "Kapellbrücke", "Kapellbruecke", "Kapellbrücke Wasserturm", "Chapel Bridge", "Water Tower"],
-      demoEnde: true
+
+    wachtturm: {
+      name: "Wachtturm", kurz: "Wachtturm",
+      zielAntworten: ["Wachtturm", "Wachturm", "Musegg", "Museggmauer", "Museggturm", "Zytturm", "Zeitturm", "Panoramaterrasse"],
+      raetsel: {
+        stufe1: "Neun Wächter stehen auf dem Hügel über der Altstadt. Einer trägt die Wache schon im Namen – und von seiner Terrasse seht ihr, dass die Zeit in Luzern ihren eigenen Kopf hat.",
+        stufe2: "Museggmauer. Der Turm mit der Aussicht, die Uhr in Sichtweite."
+      },
+      intro: "Ihr seid oben. Erst der Beweis, dann die Zahl.",
+      aufgaben: [
+        { id: "selfie", typ: "foto", titel: "Panorama-Selfie", punkte: 10, whatsappText: "Selfie Wachtturm",
+          text: "Ein Selfie mit dem ganzen Team auf der Panoramaterrasse, die Stadt im Rücken. Alle Gesichter drauf, sonst gilt’s nicht." },
+        { id: "iv", typ: "text", titel: "Die falsche Zahl", punkte: 15,
+          text: "Dem Doktor unter den Geburtstagskindern fällt es sofort auf: Was auf diesem Ziffernblatt fehlt, würde er dem Patienten i.v. geben – intravenös, direkt in die Vene. Der Uhrmacher sah das anders und hat lieber vier gleiche Striche gesetzt.\nWelche Zahl gehört eigentlich hin? Antwort so, wie der Doktor sie schreiben würde.",
+          hinweis: "Auf dem Ziffernblatt steht eine Zahl so, wie sie in der Schule nie durchgegangen wäre. Zählt die Striche.",
+          antworten: ["IV", "4"] }
+      ]
     }
+  },
+
+  /* Letzte Station: die Bar. Lösung E 2'665'677 / N 1'211'330 (LV95) – auf map.geo.admin.ch prüfen. */
+  final: {
+    titel: "Die letzte Station",
+    text: "Die letzte Station hat keinen Namen, nur Koordinaten – Schweizer Landeskoordinaten, wie sie jeder Geometer liest: ein Ostwert und ein Nordwert, je sieben Ziffern. Die Jubilare zählt ihr dabei in Kalenderreihenfolge: Nummer eins, zwei, drei.\n\nOst: Addiert die drei Geburtstage als sechsstellige Zahlen (TTMMJJ). Dazu das Jahr, in dem die berühmteste Brücke der Stadt brannte, und den Jahrgang der drei. Vor das Ergebnis gehört noch die Zahl der gedeckten Holzbrücken über die Reuss.\n\nNord: Der Tag nach dem zweiten Geburtstag, ohne Punkt geschrieben. Dahinter die Zahl der Geburtstagskinder, dann der Tag des ersten Geburtstags.\n\nGebt beide Zahlen hier ein – und dann auf map.geo.admin.ch. Die Geburtstage kennt ihr nicht auswendig? Dann fragt die, die es wissen müssen.",
+    hinweise: [
+      "Die Geburtstage: 30.10.96, 11.11.96 und 25.12.96. Luzerner Koordinaten beginnen mit 2'66… (Ost) und 1'21… (Nord).",
+      "Ost: 301096 + 111196 + 251296 + 1993 + 96, und davor eine 2.",
+      "Nord ist 1'211'330. Den Ostwert schafft ihr jetzt selber. Dann: map.geo.admin.ch, Suchfeld, beide Zahlen mit Leerschlag."
+    ],
+    e: 2665677, n: 1211330, toleranz: 70,
+    nameAntworten: ["Liebenau", "Bar Liebenau", "Franziskanerplatz"],
+    adresse: "Liebenau · Bar · Fein · Wein, Franziskanerplatz 14, 6003 Luzern"
   }
 };
 
-/* ========================= Speicher: Handy oder Firebase ========================= */
+/* ========================= Speicher ========================= */
 const app = document.getElementById("app");
-let team = null, st = null, db = null, teamRef = null, online = false, adminOk = false, adminData = {}, adminBound = false;
+let team = null, st = null, db = null, teamRef = null, online = false, adminOk = false, adminData = {}, adminBound = false, justStamped = null;
 
 function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function fetchStore(k) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
-
 function backendInit() {
   try {
     if (FIREBASE.databaseURL && window.firebase) {
-      firebase.initializeApp(FIREBASE);
-      db = firebase.database();
+      firebase.initializeApp(FIREBASE); db = firebase.database();
       db.ref(".info/connected").on("value", s => { online = !!s.val(); const c = document.getElementById("conn"); if (c) c.className = "conn" + (online ? " on" : ""); });
     }
   } catch (e) { console.warn("Firebase nicht gestartet:", e); db = null; }
 }
-function freshState() { return { rev: 0, idx: 0, phase: "ziel", tasks: {}, punkte: 0, strafen: 0, log: [], start: Date.now(), lastSeen: Date.now() }; }
+function freshState() { return { rev: 0, idx: 0, phase: "ziel", tasks: {}, punkte: 0, strafen: 0, log: [], start: Date.now(), lastSeen: Date.now(), finalHints: 0 }; }
 function normalize(s) {
   s = s || freshState();
-  s.tasks = s.tasks || {}; s.log = s.log || []; s.rev = s.rev || 0;
-  Object.values(s.tasks).forEach(t => { t.trivia = t.trivia || []; t.triviaT = t.triviaT || []; });
+  s.tasks = s.tasks || {}; s.log = s.log || []; s.rev = s.rev || 0; s.finalHints = s.finalHints || 0;
+  Object.values(s.tasks).forEach(t => { t.done = t.done || {}; t.doneT = t.doneT || {}; t.triviaIdx = t.triviaIdx || {}; t.triviaT = t.triviaT || {}; t.bonus = t.bonus || {}; t.hint = t.hint || {}; });
   return s;
 }
 function save() {
@@ -209,9 +245,9 @@ async function loginTeam(k) {
     teamRef = db.ref("teams/" + k);
     const snap = await teamRef.once("value");
     st = normalize(snap.exists() ? snap.val() : null);
-    if (!snap.exists()) logEv("Eingeloggt"); else { logEv("Weiteres Handy eingeloggt"); }
+    logEv(snap.exists() ? "Weiteres Handy eingeloggt" : "Eingeloggt");
     teamRef.on("value", s => {
-      if (!s.exists()) return;
+      if (!s.exists()) { st = freshState(); render(); return; }
       const inc = normalize(s.val());
       if (inc.rev !== st.rev) { st = inc; store("sj_" + team, st); render(); }
     });
@@ -221,17 +257,15 @@ async function loginTeam(k) {
   }
   render();
 }
-function logout() {
-  if (teamRef) teamRef.off();
-  teamRef = null; team = null; st = null; store("sj_current", null); render();
-}
+function logout() { if (teamRef) teamRef.off(); teamRef = null; team = null; st = null; store("sj_current", null); render(); }
 
 /* ========================= Hilfsfunktionen ========================= */
-function station() { return CONFIG.stationen[CONFIG.teams[team].stationen[st.idx]]; }
-function stationId() { return CONFIG.teams[team].stationen[st.idx]; }
-function taskState() {
-  const id = stationId();
-  if (!st.tasks[id]) st.tasks[id] = { zahl: false, trivia: [], triviaT: [], triviaIdx: 0, foto: false, hinweis: false, versuche: 0 };
+function stationIds() { return CONFIG.teams[team].stationen; }
+function stationId() { return stationIds()[st.idx]; }
+function station() { return CONFIG.stationen[stationId()]; }
+function taskState(id) {
+  id = id || stationId();
+  if (!st.tasks[id]) st.tasks[id] = { done: {}, doneT: {}, triviaIdx: {}, triviaT: {}, bonus: {}, hint: {}, hinweis: false, versuche: 0 };
   return st.tasks[id];
 }
 function norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss").replace(/[^a-z0-9]/g, ""); }
@@ -247,29 +281,52 @@ function matchText(input, answers) {
   return answers.some(a => { const m = norm(a); if (n === m) return true; const tol = m.length >= 10 ? 2 : (m.length >= 6 ? 1 : 0); return lev(n, m) <= tol; });
 }
 function matchNumber(input, answer) { const d = String(input).replace(/[^0-9]/g, ""); return d.length > 0 && d === String(answer).replace(/[^0-9]/g, ""); }
+function matchCoords(input) {
+  const F = CONFIG.final;
+  if (matchText(input, F.nameAntworten)) return true;
+  let s = String(input).replace(/(\d)[’'](?=\d)/g, "$1");
+  let toks = s.match(/\d+/g) || [];
+  let big = toks.filter(t => t.length >= 6);
+  if (big.length < 2) { const all = toks.join(""); if (all.length === 14 || all.length === 12) big = [all.slice(0, all.length / 2), all.slice(all.length / 2)]; }
+  let e = null, n = null;
+  big.map(Number).forEach(v => {
+    if (v >= 2000000 && v < 3000000) e = v; else if (v >= 1000000 && v < 2000000) n = v;
+    else if (v >= 400000 && v < 900000) e = v + 2000000; else if (v >= 50000 && v < 400000) n = v + 1000000;
+  });
+  return e !== null && n !== null && Math.abs(e - F.e) <= F.toleranz && Math.abs(n - F.n) <= F.toleranz;
+}
 function el(html) { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstChild; }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 function wrong(label, val, box, block, text) {
-  taskState().versuche++;
+  if (st.phase !== "final") taskState().versuche++;
   logEv(`Falsch (${label}): «${String(val).trim().slice(0, 40)}»`, "bad");
   box.innerHTML = `<div class="msg err">${text}</div>`;
   block.classList.remove("shake"); void block.offsetWidth; block.classList.add("shake");
 }
+function taskDone(a, ts) { return a.typ === "trivia" ? (ts.triviaIdx[a.id] || 0) >= a.fragen.length : !!ts.done[a.id]; }
+function stationDone(s, ts) { return s.aufgaben.every(a => taskDone(a, ts)); }
 
-/* ========================= Spielfluss (auch für Spielleitung «Freischalten») ========================= */
+/* ========================= Spielfluss ========================= */
 function advance(byGm) {
-  const s = station(); const ts = taskState(); const P = CONFIG.punkte; const pre = byGm ? "Spielleitung: " : "";
+  const P = CONFIG.punkte, pre = byGm ? "Spielleitung: " : "", kind = byGm ? "gm" : "";
   if (st.phase === "ziel") {
-    st.punkte += P.ziel; logEv(pre + "Ziel erkannt: " + s.name, byGm ? "gm" : "");
-    st.phase = s.demoEnde ? "ende" : "aufgaben"; save(); return;
+    const s = station(); st.punkte += P.ziel; logEv(pre + "Ziel erkannt: " + s.name, kind); st.phase = "aufgaben"; save(); return;
   }
   if (st.phase === "aufgaben") {
-    if (!ts.zahl) { ts.zahl = true; ts.zahlT = Date.now(); st.punkte += P.zahl; logEv(pre + "Römische Zahlen gelöst", byGm ? "gm" : ""); save(); return; }
-    const q = s.trivia.fragen;
-    if (ts.triviaIdx < q.length) { const i = ts.triviaIdx; ts.trivia[i] = true; ts.triviaT[i] = Date.now(); ts.triviaIdx = i + 1; st.punkte += P.triviaProFrage; logEv(pre + `Trivia ${i + 1} gelöst`, byGm ? "gm" : ""); save(); return; }
-    if (!ts.foto) { ts.foto = true; ts.fotoT = Date.now(); st.punkte += P.foto; logEv(pre + "Teamfoto gemeldet", byGm ? "gm" : ""); save(); return; }
-    logEv(pre + "Station abgeschlossen: " + s.name, byGm ? "gm" : ""); st.idx++; st.phase = "ziel"; save();
+    const s = station(), ts = taskState();
+    const open = s.aufgaben.find(a => !taskDone(a, ts));
+    if (open) { completeTask(open, byGm); return; }
+    logEv(pre + "Station abgeschlossen: " + s.name, kind);
+    st.idx++; st.phase = st.idx >= stationIds().length ? "final" : "ziel"; save(); return;
   }
+  if (st.phase === "final") { st.punkte += P.final; logEv(pre + "Bar gefunden", kind); st.phase = "ende"; st.ende = Date.now(); save(); }
+}
+
+function completeTask(a, byGm) {
+  const ts = taskState(), pre = byGm ? "Spielleitung: " : "", kind = byGm ? "gm" : "";
+  if (a.typ === "trivia") { const i = ts.triviaIdx[a.id] || 0; ts.triviaIdx[a.id] = i + 1; ts.triviaT[a.id] = ts.triviaT[a.id] || {}; ts.triviaT[a.id][i] = Date.now(); st.punkte += a.punkteProFrage; logEv(pre + `Trivia ${i + 1} gelöst`, kind); justStamped = ts.triviaT[a.id][i]; }
+  else { ts.done[a.id] = true; ts.doneT[a.id] = Date.now(); st.punkte += a.punkte; logEv(pre + a.titel + " erledigt", kind); justStamped = ts.doneT[a.id]; }
+  save();
 }
 
 /* ========================= Rendering ========================= */
@@ -279,41 +336,35 @@ function render() {
   if (!team) return renderLogin();
   if (st.phase === "ende") return renderEnde();
   app.appendChild(topbar()); app.appendChild(lineStrip());
-  if (st.phase === "ziel") renderZiel(); else renderAufgaben();
-  app.appendChild(el(`<div class="foot"><span class="conn${online ? " on" : ""}" id="conn"></span>${db ? "Spielstand wird für das ganze Team gespeichert." : "Spielstand ist nur auf diesem Handy gespeichert."} <button type="button" id="reset">Neu starten (nur zum Testen)</button></div>`));
-  document.getElementById("reset").onclick = () => {
-    if (confirm("Wirklich alles zurücksetzen? Der Spielstand des ganzen Teams geht verloren.")) { st = freshState(); save(); logout(); }
-  };
+  if (st.phase === "ziel") renderZiel(); else if (st.phase === "final") renderFinal(); else renderAufgaben();
+  app.appendChild(el(`<div class="foot"><span class="conn${online ? " on" : ""}" id="conn"></span>${db ? "Spielstand wird für das ganze Team gespeichert." : "Spielstand ist nur auf diesem Handy gespeichert."} <button type="button" id="logout">Anderes Team</button></div>`));
+  document.getElementById("logout").onclick = logout;
 }
 function topbar() {
-  const t = CONFIG.teams[team]; const total = st.punkte - st.strafen;
+  const t = CONFIG.teams[team], total = st.punkte - st.strafen;
   return el(`<div class="topbar"><strong>${esc(t.anzeige)}</strong><span class="score">${total} Punkte${st.strafen ? ` <span class="muted small">(−${st.strafen})</span>` : ""}</span></div>`);
 }
 function lineStrip() {
-  const ids = CONFIG.teams[team].stationen;
-  const stops = ids.map((id, i) => {
-    const cls = i < st.idx ? "done" : (i === st.idx ? "now" : "");
+  const ids = stationIds();
+  let stops = ids.map((id, i) => {
+    const cls = i < st.idx ? "done" : (i === st.idx && st.phase !== "final" ? "now" : "");
     const name = CONFIG.stationen[id].kurz || CONFIG.stationen[id].name;
     return `<div class="stop ${cls}"><div class="dot"></div><div class="label">${esc(i === st.idx && st.phase === "ziel" ? "?" : name)}</div></div>`;
   }).join("");
+  stops += `<div class="stop bar ${st.phase === "final" ? "now" : (st.phase === "ende" ? "done" : "")}"><div class="dot"></div><div class="label">${st.phase === "ende" ? "Bar" : "?"}</div></div>`;
   return el(`<div class="line"><div class="track"></div><div class="stops">${stops}</div></div>`);
 }
 function renderLogin() {
   const v = el(`
-    <div>
-      <h1>Schnitzeljagd Luzern</h1>
-      <p class="muted">Teamname und Code stehen in eurem Umschlag.</p>
-      <div class="block active">
-        <div id="loginMsg"></div>
+    <div><h1>Schnitzeljagd Luzern</h1><p class="muted">Teamname und Code stehen in eurem Umschlag.</p>
+      <div class="block active"><div id="loginMsg"></div>
         <label for="tn">Teamname</label><input type="text" id="tn" autocomplete="off" autocapitalize="none">
-        <label for="tc">Code</label><input type="tel" id="tc" autocomplete="off">
-        <button class="btn" id="go">Los geht’s</button>
-      </div>
-    </div>`);
+        <label for="tc">Code</label><input type="text" id="tc" autocomplete="off" autocapitalize="none">
+        <button class="btn" id="go">Los geht’s</button></div></div>`);
   app.appendChild(v);
   const go = () => {
-    const name = norm(document.getElementById("tn").value); const code = document.getElementById("tc").value.trim();
-    const hit = Object.keys(CONFIG.teams).find(k => norm(k) === name && CONFIG.teams[k].code === code);
+    const name = norm(document.getElementById("tn").value), code = norm(document.getElementById("tc").value);
+    const hit = Object.keys(CONFIG.teams).find(k => norm(k) === name && norm(CONFIG.teams[k].code) === code);
     if (!hit) { document.getElementById("loginMsg").innerHTML = `<div class="msg err">Teamname oder Code stimmt nicht. Schaut nochmals in den Umschlag.</div>`; return; }
     document.getElementById("go").textContent = "Lade Spielstand …"; loginTeam(hit);
   };
@@ -321,91 +372,128 @@ function renderLogin() {
   v.querySelectorAll("input").forEach(i => i.addEventListener("keydown", e => { if (e.key === "Enter") go(); }));
 }
 function renderZiel() {
-  const s = station(); const n = st.idx + 1; const ts = taskState();
-  const prev = st.idx > 0 ? CONFIG.stationen[CONFIG.teams[team].stationen[st.idx - 1]] : null;
-  const raetselHtml = (prev && prev.raetsel)
-    ? `<div class="block"><h3>Das Rätsel</h3><div class="riddle">${esc(prev.raetsel.stufe1)}</div>
-       ${ts.hinweis ? `<div class="riddle hint">${esc(prev.raetsel.stufe2)}</div>` : `<button class="btn quiet" id="hint">Hinweis anzeigen (−${CONFIG.punkte.hinweisStrafe} Punkte)</button>`}</div>`
-    : `<p class="muted">Das Rätsel zu dieser Station liegt im Umschlag.</p>`;
-  const v = el(`
-    <div><h2>Station ${n}: Wohin geht’s?</h2>${raetselHtml}
-      <div class="block active" id="zielBlock"><div id="zielMsg"></div>
-        <label for="ziel">Euer Ziel</label><input type="text" id="ziel" autocomplete="off" placeholder="Name des Ortes">
-        <button class="btn" id="zielGo">Prüfen</button></div></div>`);
-  app.appendChild(v);
+  const s = station(), n = st.idx + 1, ts = taskState();
+  const prev = st.idx > 0 ? CONFIG.stationen[stationIds()[st.idx - 1]] : null;
+  let raetselHtml;
+  if (prev && prev.naechstesRaetselPerWhatsapp) {
+    raetselHtml = `<div class="block warn"><h3>Das Rätsel</h3><p>Das Rätsel zur nächsten Station schickt euch die Spielleitung per WhatsApp, sobald euer Foto angekommen ist. Wenn ihr es gelöst habt: Ziel hier eingeben.</p></div>`;
+  } else if (st.idx === 0 && !CONFIG.ersteRaetselAufSeite) {
+    raetselHtml = `<p class="muted">Das Rätsel zu dieser Station liegt im Umschlag.</p>`;
+  } else {
+    raetselHtml = `<div class="block"><h3>Das Rätsel</h3><div class="riddle">${esc(s.raetsel.stufe1)}</div>
+      ${ts.hinweis ? `<div class="riddle hint">${esc(s.raetsel.stufe2)}</div>` : `<button class="btn quiet" id="hint">Hinweis anzeigen (−${CONFIG.punkte.hinweisStrafe} Punkte)</button>`}</div>`;
+  }
+  app.appendChild(el(`<div><h2>Station ${n}: Wohin geht’s?</h2>${raetselHtml}
+    <div class="block active" id="zielBlock"><div id="zielMsg"></div>
+      <label for="ziel">Euer Ziel</label><input type="text" id="ziel" autocomplete="off" placeholder="Name des Ortes">
+      <button class="btn" id="zielGo">Prüfen</button></div></div>`));
   const hint = document.getElementById("hint");
   if (hint) hint.onclick = () => { ts.hinweis = true; st.strafen += CONFIG.punkte.hinweisStrafe; logEv("Hinweis geöffnet (Station " + n + ")"); render(); };
   const go = () => {
     const val = document.getElementById("ziel").value;
     if (isSkip(val) || matchText(val, s.zielAntworten)) { advance(isSkip(val)); render(); }
-    else wrong("Ziel", val, document.getElementById("zielMsg"), document.getElementById("zielBlock"), "Das ist es nicht. Nochmals lesen, nochmals probieren.");
+    else wrong("Ziel " + n, val, document.getElementById("zielMsg"), document.getElementById("zielBlock"), "Das ist es nicht. Nochmals lesen, nochmals probieren.");
   };
   document.getElementById("zielGo").onclick = go;
   document.getElementById("ziel").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
 }
-let justStamped = null;
-function renderAufgaben() {
-  const s = station(); const ts = taskState();
-  const q = s.trivia.fragen;
-  const triviaDone = ts.triviaIdx >= q.length;
-  const allDone = ts.zahl && triviaDone && ts.foto;
-  const stampHtml = (t) => `<div class="stamp ${t === justStamped ? "fresh" : ""}">Erledigt ${fmt(t)}</div>`;
-  app.appendChild(el(`<div><h2>${esc(s.name)}</h2><p class="muted">Ihr seid da. Drei Aufgaben, die Reihenfolge ist euch überlassen: das Foto geht parallel.</p></div>`));
-
-  const b1 = el(`<div class="block ${ts.zahl ? "done" : "active"}">${ts.zahl ? stampHtml(ts.zahlT) : ""}<h3>Römische Zahlen</h3><p>${esc(s.zahl.frage)}</p>
-    ${ts.zahl ? "" : `<div id="zahlMsg"></div><input type="tel" id="zahl" autocomplete="off" placeholder="Summe"><button class="btn" id="zahlGo">Prüfen</button>`}</div>`);
-  app.appendChild(b1);
-  if (!ts.zahl) {
-    const go = () => { const val = document.getElementById("zahl").value;
-      if (isSkip(val) || matchNumber(val, s.zahl.antwort)) { advance(isSkip(val)); justStamped = ts.zahlT; render(); }
-      else wrong("Summe", val, document.getElementById("zahlMsg"), b1, "Stimmt nicht. Habt ihr alle vier Zahlen? Und die Umrechnung geprüft?"); };
-    document.getElementById("zahlGo").onclick = go;
-    document.getElementById("zahl").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
-  }
-
-  const wa = CONFIG.whatsappNummer
-    ? `<a class="btn ghost" style="margin-bottom:.6rem" href="https://wa.me/${CONFIG.whatsappNummer}?text=${encodeURIComponent(s.foto.whatsappText)}" target="_blank" rel="noopener">Foto per WhatsApp an die Spielleitung</a>`
+function waLink(a) {
+  const txt = `${CONFIG.teams[team].anzeige}: ${a.whatsappText || a.titel}`;
+  return CONFIG.whatsappNummer
+    ? `<a class="btn ghost" style="margin-bottom:.6rem" href="https://wa.me/${CONFIG.whatsappNummer}?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Foto per WhatsApp an die Spielleitung</a>`
     : `<p class="small muted">Schickt das Foto per WhatsApp an die Spielleitung (Nummer im Umschlag).</p>`;
-  const b2 = el(`<div class="block ${ts.foto ? "done" : "active"}">${ts.foto ? stampHtml(ts.fotoT) : ""}<h3>Teamfoto</h3><p>${esc(s.foto.text)}</p>
-    ${ts.foto ? "" : wa + `<label class="check"><input type="checkbox" id="fotoChk"> Foto ist gemacht und an die Spielleitung geschickt</label>`}</div>`);
-  app.appendChild(b2);
-  if (!ts.foto) document.getElementById("fotoChk").onchange = (e) => { if (!e.target.checked) return;
-    ts.foto = true; ts.fotoT = Date.now(); st.punkte += CONFIG.punkte.foto; justStamped = ts.fotoT; logEv("Teamfoto gemeldet"); render(); };
+}
+function renderAufgaben() {
+  const s = station(), ts = taskState();
+  const stampHtml = (t) => `<div class="stamp ${t === justStamped ? "fresh" : ""}">Erledigt ${fmt(t)}</div>`;
+  app.appendChild(el(`<div><h2>${esc(s.name)}</h2><p class="muted">${esc(s.intro || "Ihr seid da.")}</p></div>`));
 
-  if (!ts.zahl) {
-    app.appendChild(el(`<div class="block locked"><h3>Trivia</h3><p>Wird freigeschaltet, sobald die Summe stimmt.</p></div>`));
-  } else {
-    const i = ts.triviaIdx;
-    const doneList = q.slice(0, i).map((f, k) => `<dt>${esc(f.frage)}</dt><dd>Gelöst ${fmt(ts.triviaT[k])}</dd>`).join("");
-    const b3 = el(`<div class="block ${triviaDone ? "done" : "active"}">${triviaDone ? stampHtml(ts.triviaT[q.length - 1]) : ""}
-      <h3>Trivia${triviaDone ? "" : ` ${i + 1} von ${q.length}`}</h3>${triviaDone ? "" : `<p class="muted small">${esc(s.trivia.intro)}</p>`}
-      ${doneList ? `<dl>${doneList}</dl>` : ""}
-      ${triviaDone ? "" : `<p style="margin-top:.8rem"><strong>${esc(q[i].frage)}</strong></p><div id="trMsg"></div>
-        <input type="text" id="tr" autocomplete="off" placeholder="Antwort"><button class="btn" id="trGo">Prüfen</button>`}</div>`);
-    app.appendChild(b3);
-    if (!triviaDone) {
-      const go = () => { const val = document.getElementById("tr").value;
-        if (isSkip(val) || matchText(val, q[i].antworten)) { advance(isSkip(val)); justStamped = ts.triviaT[i]; render(); }
-        else wrong(`Trivia ${i + 1}`, val, document.getElementById("trMsg"), b3, "Nein. Die Tafel nochmals genau lesen."); };
-      document.getElementById("trGo").onclick = go;
-      document.getElementById("tr").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+  s.aufgaben.forEach(a => {
+    const done = taskDone(a, ts);
+    const locked = a.nach && !taskDone(s.aufgaben.find(x => x.id === a.nach), ts);
+    if (locked) { app.appendChild(el(`<div class="block locked"><h3>${esc(a.titel)}</h3><p>Wird freigeschaltet, sobald «${esc(s.aufgaben.find(x => x.id === a.nach).titel)}» gelöst ist.</p></div>`)); return; }
+
+    if (a.typ === "zahl" || a.typ === "text") {
+      const b = el(`<div class="block ${done ? "done" : "active"}">${done ? stampHtml(ts.doneT[a.id]) : ""}<h3>${esc(a.titel)}</h3><p style="white-space:pre-line">${esc(a.text)}</p>
+        ${done ? "" : `${a.hinweis ? (ts.hint[a.id] ? `<div class="riddle hint" style="font-size:1rem">${esc(a.hinweis)}</div>` : `<button class="btn quiet" id="h_${a.id}" style="margin-bottom:.6rem">Hinweis anzeigen (−${CONFIG.punkte.hinweisStrafe} Punkte)</button>`) : ""}
+        <div id="m_${a.id}"></div><input type="${a.typ === "zahl" ? "tel" : "text"}" id="i_${a.id}" autocomplete="off" placeholder="${a.typ === "zahl" ? "Zahl" : "Antwort"}"><button class="btn" id="g_${a.id}">Prüfen</button>`}</div>`);
+      app.appendChild(b);
+      if (!done) {
+        const h = document.getElementById("h_" + a.id);
+        if (h) h.onclick = () => { ts.hint[a.id] = true; st.strafen += CONFIG.punkte.hinweisStrafe; logEv("Hinweis geöffnet: " + a.titel); render(); };
+        const go = () => { const val = document.getElementById("i_" + a.id).value;
+          const ok = a.typ === "zahl" ? matchNumber(val, a.antwort) : matchText(val, a.antworten);
+          if (isSkip(val) || ok) { completeTask(a, isSkip(val)); render(); }
+          else wrong(a.titel, val, document.getElementById("m_" + a.id), b, a.typ === "zahl" ? "Stimmt nicht. Nochmals zählen, nochmals rechnen." : "Nein. Nochmals genau hinschauen."); };
+        document.getElementById("g_" + a.id).onclick = go;
+        document.getElementById("i_" + a.id).addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+      }
     }
-  }
-  if (allDone) {
-    const b4 = el(`<div class="block active"><h3>Alles erledigt</h3><p>Das Rätsel zur nächsten Station wartet.</p><button class="btn" id="next">Rätsel anzeigen</button></div>`);
-    app.appendChild(b4);
+
+    if (a.typ === "foto") {
+      const b = el(`<div class="block ${done ? "done" : "active"}">${done ? stampHtml(ts.doneT[a.id]) : ""}<h3>${esc(a.titel)}</h3><p>${esc(a.text)}</p>
+        ${done ? (ts.bonus[a.id] ? `<p class="small" style="color:var(--ok);font-weight:700">Bonus eingelöst</p>` : "") : waLink(a) +
+          (a.bonus ? `<label class="check"><input type="checkbox" id="b_${a.id}" ${ts.bonus[a.id] ? "checked" : ""}> ${esc(a.bonus.text)}</label>` : "") +
+          `<label class="check"><input type="checkbox" id="c_${a.id}"> Foto ist gemacht und an die Spielleitung geschickt</label>`}</div>`);
+      app.appendChild(b);
+      if (!done) {
+        const bx = document.getElementById("b_" + a.id);
+        if (bx) bx.onchange = (e) => { ts.bonus[a.id] = e.target.checked; save(); };
+        document.getElementById("c_" + a.id).onchange = (e) => { if (!e.target.checked) return;
+          if (ts.bonus[a.id]) { st.punkte += a.bonus.punkte; logEv("Bonus: " + a.bonus.text); }
+          completeTask(a, false); render(); };
+      }
+    }
+
+    if (a.typ === "trivia") {
+      const i = ts.triviaIdx[a.id] || 0, T = ts.triviaT[a.id] || {};
+      const doneList = a.fragen.slice(0, i).map((f, k) => `<dt>${esc(f.frage)}</dt><dd>Gelöst ${fmt(T[k])}</dd>`).join("");
+      const b = el(`<div class="block ${done ? "done" : "active"}">${done ? stampHtml(T[a.fragen.length - 1]) : ""}
+        <h3>${esc(a.titel)}${done ? "" : ` ${i + 1} von ${a.fragen.length}`}</h3>${done ? "" : `<p class="muted small">${esc(a.intro)}</p>`}
+        ${doneList ? `<dl>${doneList}</dl>` : ""}
+        ${done ? "" : `<p style="margin-top:.8rem"><strong>${esc(a.fragen[i].frage)}</strong></p><div id="m_${a.id}"></div>
+          <input type="text" id="i_${a.id}" autocomplete="off" placeholder="Antwort"><button class="btn" id="g_${a.id}">Prüfen</button>`}</div>`);
+      app.appendChild(b);
+      if (!done) {
+        const go = () => { const val = document.getElementById("i_" + a.id).value;
+          if (isSkip(val) || matchText(val, a.fragen[i].antworten)) { completeTask(a, isSkip(val)); render(); }
+          else wrong(`Trivia ${i + 1}`, val, document.getElementById("m_" + a.id), b, "Nein. Die Tafel nochmals genau lesen."); };
+        document.getElementById("g_" + a.id).onclick = go;
+        document.getElementById("i_" + a.id).addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+      }
+    }
+  });
+
+  if (stationDone(s, ts)) {
+    const last = st.idx === stationIds().length - 1;
+    app.appendChild(el(`<div class="block active"><h3>Alles erledigt</h3><p>${last ? "Jetzt fehlt nur noch die Bar." : "Das Rätsel zur nächsten Station wartet."}</p><button class="btn" id="next">${last ? "Zur letzten Station" : "Weiter"}</button></div>`));
     document.getElementById("next").onclick = () => { advance(false); render(); };
   }
   justStamped = null;
 }
+function renderFinal() {
+  const F = CONFIG.final, h = st.finalHints || 0;
+  const hints = F.hinweise.slice(0, h).map((x, i) => `<div class="riddle hint"><span class="muted small">Hinweis ${i + 1}</span><br>${esc(x)}</div>`).join("");
+  app.appendChild(el(`<div><h2>${esc(F.titel)}</h2>
+    <div class="block"><div class="riddle long">${esc(F.text)}</div>${hints}
+      ${h < F.hinweise.length ? `<button class="btn quiet" id="fh">Hinweis ${h + 1} von ${F.hinweise.length} anzeigen (−${CONFIG.punkte.hinweisStrafe} Punkte)</button>` : ""}</div>
+    <div class="block active" id="fBlock"><div id="fMsg"></div><label for="fin">Koordinaten (Ost und Nord)</label>
+      <input type="text" id="fin" autocomplete="off" placeholder="Ost und Nord"><button class="btn" id="fGo">Prüfen</button></div></div>`));
+  const fh = document.getElementById("fh");
+  if (fh) fh.onclick = () => { st.finalHints = h + 1; st.strafen += CONFIG.punkte.hinweisStrafe; logEv(`Final-Hinweis ${h + 1} geöffnet`); render(); };
+  const go = () => { const val = document.getElementById("fin").value;
+    if (isSkip(val) || matchCoords(val)) { advance(isSkip(val)); render(); }
+    else wrong("Koordinaten", val, document.getElementById("fMsg"), document.getElementById("fBlock"), "Das führt euch nirgendwohin. Nochmals rechnen – oder einen Hinweis nehmen."); };
+  document.getElementById("fGo").onclick = go;
+  document.getElementById("fin").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+}
 function renderEnde() {
-  const t = CONFIG.teams[team]; const total = st.punkte - st.strafen; const mins = Math.round((Date.now() - st.start) / 60000);
-  const v = el(`<div><h1>Ende der Testversion</h1><p class="muted">Ab hier kämen die Aufgaben der nächsten Station.</p>
-    <div class="block done"><h3>${esc(t.anzeige)}</h3><dl><dt>Punkte</dt><dd>${total} (davon ${st.strafen} Strafpunkte)</dd><dt>Spielzeit</dt><dd>${mins} Minuten</dd></dl></div>
-    <div class="block"><h3>Protokoll</h3><p class="small muted">Zeigt diesen Bildschirm am Schluss der Spielleitung.</p><ul class="log">${logHtml(st.log)}</ul></div>
-    <button class="btn quiet" id="reset2">Neu starten (nur zum Testen)</button></div>`);
-  app.appendChild(v);
-  document.getElementById("reset2").onclick = () => { st = freshState(); save(); logout(); };
+  const t = CONFIG.teams[team], total = st.punkte - st.strafen, mins = Math.round(((st.ende || Date.now()) - st.start) / 60000);
+  app.appendChild(el(`<div><h1>Prost!</h1><p>Ihr habt es. Die letzte Station: <strong>${esc(CONFIG.final.adresse)}</strong>. Wer zuerst dort ist, bekommt die erste Runde.</p>
+    <div class="block done"><h3>${esc(t.anzeige)}</h3><dl><dt>Punkte</dt><dd>${total}${st.strafen ? ` (davon ${st.strafen} Strafpunkte)` : ""}</dd><dt>Spielzeit</dt><dd>${mins} Minuten</dd></dl></div>
+    <div class="block"><h3>Protokoll</h3><p class="small muted">Zeigt diesen Bildschirm der Spielleitung an der Bar.</p><ul class="log">${logHtml(st.log)}</ul></div>
+    <div class="foot"><button type="button" id="logout2">Anderes Team</button></div></div>`));
+  document.getElementById("logout2").onclick = logout;
 }
 function logHtml(log) { return (log || []).map(e => `<li class="${e.kind || ""}">${fmt(e.t)} – ${esc(e.text)}</li>`).join(""); }
 
@@ -413,9 +501,8 @@ function logHtml(log) { return (log || []).map(e => `<li class="${e.kind || ""}"
 function renderAdmin() {
   app.className = "wrap wide"; app.innerHTML = "";
   if (!adminOk) {
-    const v = el(`<div><h1>Spielleitung</h1><div class="block active"><div id="aMsg"></div><label for="ac">Spielleiter-Code</label>
-      <input type="password" id="ac"><button class="btn" id="aGo">Öffnen</button></div></div>`);
-    app.appendChild(v);
+    app.appendChild(el(`<div><h1>Spielleitung</h1><div class="block active"><div id="aMsg"></div><label for="ac">Spielleiter-Code</label>
+      <input type="password" id="ac"><button class="btn" id="aGo">Öffnen</button></div></div>`));
     const go = () => { if (norm(document.getElementById("ac").value) === norm(CONFIG.spielleiterCode)) { adminOk = true; bindAdmin(); }
       else document.getElementById("aMsg").innerHTML = `<div class="msg err">Code stimmt nicht.</div>`; };
     document.getElementById("aGo").onclick = go;
@@ -431,51 +518,69 @@ function bindAdmin() {
 function drawAdmin() {
   if (location.hash !== "#admin") return;
   app.className = "wrap wide"; app.innerHTML = "";
-  app.appendChild(el(`<div class="topbar"><strong>Spielleitung</strong><span class="small muted">${db ? "Live aus der Datenbank" : "Nur Spielstände dieses Handys (kein Firebase konfiguriert)"}</span></div>`));
+  app.appendChild(el(`<div class="topbar"><strong>Spielleitung</strong><span class="small muted">${db ? "Live aus der Datenbank" : "Nur Spielstände dieses Handys (kein Firebase)"}</span></div>`));
   const grid = el(`<div class="teamgrid"></div>`);
   Object.keys(CONFIG.teams).forEach(k => {
-    const t = CONFIG.teams[k]; const d = adminData[k] ? normalize(JSON.parse(JSON.stringify(adminData[k]))) : null;
+    const t = CONFIG.teams[k], d = adminData[k] ? normalize(JSON.parse(JSON.stringify(adminData[k]))) : null;
     let status = "Noch nicht eingeloggt", ticks = "", logs = "", btn = "";
+    const route = t.stationen.map(id => CONFIG.stationen[id].kurz).join(" → ") + " → Bar";
     if (d) {
-      const sid = t.stationen[Math.min(d.idx, t.stationen.length - 1)]; const s = CONFIG.stationen[sid];
-      if (d.phase === "ende") status = "Fertig";
-      else if (d.phase === "ziel") status = `Sucht Station ${d.idx + 1} (${s.name})`;
-      else status = `An Station ${d.idx + 1}: ${s.name}`;
-      const ts = d.tasks[sid];
-      if (ts && d.phase === "aufgaben") {
-        const nq = (s.trivia ? s.trivia.fragen.length : 0);
-        ticks = `Zahl <b>${ts.zahl ? "✓" : "–"}</b> · Trivia <b>${ts.triviaIdx || 0}/${nq}</b> · Foto <b>${ts.foto ? "✓" : "–"}</b>`;
-      }
+      if (d.phase === "ende") status = "Fertig – an der Bar";
+      else if (d.phase === "final") status = `Sucht die Bar (Hinweise: ${d.finalHints}/${CONFIG.final.hinweise.length})`;
+      else { const s = CONFIG.stationen[t.stationen[d.idx]]; status = d.phase === "ziel" ? `Sucht Station ${d.idx + 1} (${s.name})` : `An Station ${d.idx + 1}: ${s.name}`;
+        if (d.phase === "aufgaben") { const ts = d.tasks[t.stationen[d.idx]] || normalize({ tasks: { x: {} } }).tasks.x;
+          ticks = s.aufgaben.map(a => a.typ === "trivia" ? `${esc(a.titel)} <b>${ts.triviaIdx[a.id] || 0}/${a.fragen.length}</b>` : `${esc(a.titel)} <b>${ts.done[a.id] ? "✓" : "–"}</b>${a.bonus && ts.bonus[a.id] ? " <b>+Bonus</b>" : ""}`).join(" · "); } }
       const lg = d.log.slice().reverse();
       logs = `<details><summary class="small">Protokoll (${lg.length} Einträge, letzte zuerst)</summary><ul class="log">${logHtml(lg)}</ul></details>`;
-      if (d.phase !== "ende") btn = `<button class="btn sm ghost" data-skip="${k}" style="margin-top:.6rem">Nächsten Schritt freischalten</button>`;
+      if (d.phase !== "ende") btn = `<button class="btn sm ghost" data-skip="${k}" style="margin-top:.6rem">Nächsten Schritt freischalten</button> `;
+      btn += `<button class="btn sm danger" data-reset="${k}" style="margin-top:.6rem">Team zurücksetzen</button>`;
     }
-    grid.appendChild(el(`<div class="block ${d ? "active" : "locked"}"><h3>${esc(t.anzeige)}</h3>
-      <div class="status">${esc(status)}</div>${ticks ? `<div class="ticks">${ticks}</div>` : ""}
-      ${d ? `<div class="small muted">${d.punkte - d.strafen} Punkte · zuletzt aktiv ${ago(d.lastSeen || d.start)}</div>` : ""}
-      ${logs}${btn}</div>`));
+    grid.appendChild(el(`<div class="block ${d ? "active" : "locked"}"><h3>${esc(t.anzeige)} <span class="small muted" style="font-weight:400">· Code ${esc(t.code)}</span></h3>
+      <div class="small muted">${esc(route)}</div><div class="status">${esc(status)}</div>${ticks ? `<div class="ticks">${ticks}</div>` : ""}
+      ${d ? `<div class="small muted">${d.punkte - d.strafen} Punkte · zuletzt aktiv ${ago(d.lastSeen || d.start)}</div>` : ""}${logs}${btn}</div>`));
   });
   app.appendChild(grid);
+
+  const S = CONFIG.stationen, F = CONFIG.final;
+  const rz = Object.keys(S).map(id => `<dt>${esc(S[id].name)} – Rätsel (Ziel: ${esc(S[id].zielAntworten[0])})</dt><dd class="sol">${esc(S[id].raetsel.stufe1)}\nHinweis: ${esc(S[id].raetsel.stufe2)}</dd>` +
+    S[id].aufgaben.filter(a => a.typ !== "foto").map(a => `<dt>${esc(S[id].name)} – ${esc(a.titel)}</dt><dd class="sol">${a.typ === "trivia" ? a.fragen.map(f => f.antworten[0]).join(" · ") : (a.antwort || a.antworten[0])}</dd>`).join("")).join("");
+  app.appendChild(el(`<div class="block" style="margin-top:1rem"><details><summary>Rätsel, Lösungen und Texte zum Verschicken</summary><dl>${rz}
+    <dt>Bar – Rätsel</dt><dd class="sol">${esc(F.text)}</dd>
+    <dt>Bar – Hinweise</dt><dd class="sol">${F.hinweise.map((h, i) => `${i + 1}. ${esc(h)}`).join("\n")}</dd>
+    <dt>Bar – Lösung</dt><dd class="sol">E ${F.e} / N ${F.n} (LV95), Toleranz ±${F.toleranz} m. Gilt auch: «${esc(F.nameAntworten[0])}». ${esc(F.adresse)}</dd></dl></details></div>`));
+  app.appendChild(el(`<div class="block warn"><h3>Alles zurücksetzen</h3><p class="small muted">Löscht den Spielstand aller Teams. Nur mit Reset-Code.</p><button class="btn danger" id="resetAll">Alle Teams zurücksetzen</button></div>`));
   app.appendChild(el(`<p class="foot">Zum Spiel zurück: #admin aus der Adresse löschen und neu laden.</p>`));
+
   grid.querySelectorAll("[data-skip]").forEach(b => b.onclick = () => gmSkip(b.getAttribute("data-skip")));
+  grid.querySelectorAll("[data-reset]").forEach(b => b.onclick = () => gmReset(b.getAttribute("data-reset")));
+  document.getElementById("resetAll").onclick = () => gmReset(null);
 }
 async function gmSkip(k) {
   if (!confirm(`${CONFIG.teams[k].anzeige}: nächsten Schritt freischalten?`)) return;
-  const saveTeam = team, saveSt = st, saveRef = teamRef;
-  team = k;
+  const sv = [team, st, teamRef]; team = k;
   if (db) { teamRef = db.ref("teams/" + k); const snap = await teamRef.once("value"); st = normalize(snap.exists() ? snap.val() : null); }
   else { st = normalize(fetchStore("sj_" + k)); teamRef = null; }
   advance(true);
-  team = saveTeam; st = saveSt; teamRef = saveRef;
+  [team, st, teamRef] = sv;
   if (!db) bindAdmin();
+}
+async function gmReset(k) {
+  const code = prompt(k ? `${CONFIG.teams[k].anzeige} zurücksetzen – Reset-Code:` : "ALLE Teams zurücksetzen – Reset-Code:");
+  if (code === null) return;
+  if (norm(code) !== norm(CONFIG.resetCode)) { alert("Reset-Code stimmt nicht."); return; }
+  const keys = k ? [k] : Object.keys(CONFIG.teams);
+  for (const key of keys) { try { localStorage.removeItem("sj_" + key); } catch (e) {} }
+  try { localStorage.removeItem("sj_current"); } catch (e) {}
+  if (db) { if (k) await db.ref("teams/" + k).remove(); else await db.ref("teams").remove(); }
+  else bindAdmin();
 }
 
 /* ========================= Start ========================= */
 window.addEventListener("hashchange", () => { if (location.hash === "#admin") renderAdmin(); else render(); });
 (function init() {
   backendInit();
-  const cur = fetchStore("sj_current");
   if (location.hash === "#admin") return renderAdmin();
+  const cur = fetchStore("sj_current");
   if (cur && CONFIG.teams[cur]) loginTeam(cur); else render();
 })();
 </script>
